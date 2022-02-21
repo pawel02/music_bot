@@ -43,16 +43,20 @@ class music_cog(commands.Cog):
             self.is_playing = False
 
     # infinite loop checking 
-    async def play_music(self):
+    async def play_music(self, ctx):
         if len(self.music_queue) > 0:
             self.is_playing = True
 
             m_url = self.music_queue[0][0]['source']
             
             #try to connect to voice channel if you are not already connected
-
             if self.vc == None or not self.vc.is_connected():
                 self.vc = await self.music_queue[0][1].connect()
+                
+                #in case we fail to connect
+                if self.vc == None:
+                    await ctx.send("Could not connect to the voice channel")
+                    return
             else:
                 await self.vc.move_to(self.music_queue[0][1])
             
@@ -82,7 +86,7 @@ class music_cog(commands.Cog):
                 self.music_queue.append([song, voice_channel])
                 
                 if self.is_playing == False:
-                    await self.play_music()
+                    await self.play_music(ctx)
 
     @commands.command(name="pause", help="Pauses the current song being played")
     async def pause(self, ctx, *args):
@@ -98,14 +102,20 @@ class music_cog(commands.Cog):
         if self.is_paused:
             self.vc.resume()
 
+    @commands.command(name="skip", help="Skips the current song being played")
+    async def skip(self, ctx):
+        if self.vc != None and self.vc:
+            self.vc.stop()
+            #try to play next in the queue if it exists
+            await self.play_music(ctx)
+
+
     @commands.command(name="queue", help="Displays the current songs in queue")
     async def q(self, ctx):
         retval = ""
-
         for i in range(0, len(self.music_queue)):
             # display a max of 5 songs in the current queue
             if (i > 4): break
-            
             retval += self.music_queue[i][0]['title'] + "\n"
 
         if retval != "":
@@ -113,13 +123,13 @@ class music_cog(commands.Cog):
         else:
             await ctx.send("No music in queue")
 
-    @commands.command(name="skip", help="Skips the current song being played")
-    async def skip(self, ctx):
-        if self.vc != "" and self.vc:
+    @commands.command(name="clear", help="Stops the music and clears the queue")
+    async def clear(self, ctx):
+        if self.vc != None and self.is_playing:
             self.vc.stop()
-            #try to play next in the queue if it exists
-            await self.play_music()
-            
+        self.music_queue = []
+        await ctx.send("Music queue cleared")
+
     @commands.command(name="leave", help="Kick the bot from VC")
     async def dc(self, ctx):
         self.is_playing = False
