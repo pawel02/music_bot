@@ -14,7 +14,6 @@ lazy-object-proxy==1.6.0
 mccabe==0.6.1
 multidict==6.0.2
 pycparser==2.20
-pygame==2.0.1
 pylint==2.7.2
 pymongo==3.12.1
 PyNaCl==1.5.0
