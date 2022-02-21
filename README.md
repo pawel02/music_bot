@@ -1,5 +1,5 @@
 # Todo
-[] - play command
+[x] - play command
 [] - pause command
 [] - stop command
 [] - check music in queue command
