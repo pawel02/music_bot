@@ -1,15 +1,17 @@
 import discord
 from discord.ext import commands
+import os
 
-Bot = commands.Bot(command_prefix="/")
+#import all of the cogs
+from music_cog import music_cog
 
-@Bot.command()
-async def echo(ctx, *args):
-    _args = " ".join(args)
-    await ctx.send(_args)
+bot = commands.Bot(command_prefix='/')
 
-token = ""
-with open("token.txt", "r") as file:
-    token = file.readline()
+#remove the default help command so that we can write out own
+bot.remove_command('help')
 
-Bot.run(token)
+#register the class with the bot
+bot.add_cog(music_cog(bot))
+
+#start the bot with our token
+bot.run(os.getenv("TOKEN"))
