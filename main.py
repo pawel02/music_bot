@@ -12,8 +12,10 @@ bot = commands.Bot(command_prefix='/')
 bot.remove_command('help')
 
 #register the class with the bot
-bot.add_cog(help_cog(bot))
-bot.add_cog(music_cog(bot))
+@bot.event
+async def on_ready():
+  await bot.add_cog(help_cog(bot))
+  await bot.add_cog(music_cog(bot))
 
 #start the bot with our token
 bot.run(os.getenv("TOKEN"))
