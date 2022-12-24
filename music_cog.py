@@ -110,9 +110,7 @@ class music_cog(commands.Cog):
     @commands.command(name="skip", aliases=["s"], help="Skips the current song being played")
     async def skip(self, ctx):
         if self.vc != None and self.vc:
-            self.vc.stop()
-            #try to play next in the queue if it exists
-            await self.play_music(ctx)
+            self.vc.stop()         
 
 
     @commands.command(name="queue", aliases=["q"], help="Displays the current songs in queue")
