@@ -1,8 +1,8 @@
 from ast import alias
 import discord
 from discord.ext import commands
-
-from youtube_dl import YoutubeDL
+from yt_dlp import YoutubeDL
+#from youtube_dl import YoutubeDL
 
 class music_cog(commands.Cog):
     def __init__(self, bot):
@@ -14,7 +14,7 @@ class music_cog(commands.Cog):
 
         # 2d array containing [song, channel]
         self.music_queue = []
-        self.YDL_OPTIONS = {'format': 'bestaudio', 'noplaylist':'True'}
+        self.YDL_OPTIONS = {'format': 'bestaudio',"quiet": "true", 'noplaylist':'True'}
         self.FFMPEG_OPTIONS = {'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5', 'options': '-vn'}
 
         self.vc = None
@@ -27,7 +27,7 @@ class music_cog(commands.Cog):
             except Exception: 
                 return False
 
-        return {'source': info['formats'][0]['url'], 'title': info['title']}
+        return {"source": info["url"], "title": info["fulltitle"]}
 
     def play_next(self):
         if len(self.music_queue) > 0:
