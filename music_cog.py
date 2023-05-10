@@ -2,7 +2,7 @@ from ast import alias
 import discord
 from discord.ext import commands
 
-from youtube_dl import YoutubeDL
+from yt_dlp import YoutubeDL
 
 class music_cog(commands.Cog):
     def __init__(self, bot):
