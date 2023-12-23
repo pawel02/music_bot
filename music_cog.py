@@ -119,7 +119,6 @@ class music_cog(commands.Cog):
             #try to play next in the queue if it exists
             await self.play_music(ctx)
 
-
     @commands.command(name="queue", aliases=["q"], help="Displays the current songs in queue")
     async def queue(self, ctx):
         retval = ""
